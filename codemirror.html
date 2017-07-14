@@ -19,7 +19,7 @@
       .cm-header-4 { font-size: 110%; }
       .cm-header-5 { font-size: 100%; }
       .cm-header-6 { font-size: 90%; }
-      /* .cm-strong { font-size: 140%; } */
+      .cm-strong { font-size: 103%; }
 
       #container {
         display: flex;
@@ -32,7 +32,6 @@
       }
       .CodeMirror {
           flex: 1 30em;
-          display: inline-block;
       }
     </style>
   </head>
@@ -40,7 +39,19 @@
   <body>
     <div id="container">
       <p>Type some text here.</p>
-    <textarea id="code" name="code"># A First Level Header
+      <div id="forcm"></div>
+      <p>See above</p>
+    </div>
+    <script id="script">
+      var editor = CodeMirror(
+          function(elt) {
+              document.getElementById('container').replaceChild(elt, document.getElementById('forcm'));
+          },
+          {
+              lineNumbers: true,
+              lineWrapping: true,
+              mode: "markdown",
+              value: `# A First Level Header
 
 **Bold** text in a normal-size paragraph.
 
@@ -62,14 +73,7 @@ dog's back.
 > This is the second paragraph in the blockquote.
 >
 > ## This is an H2 in a blockquote
-    </textarea>
-    <p>See above</p>
-    </div>
-    <script id="script">
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        mode: "markdown"
+      `,
       });
     </script>
   </body>
