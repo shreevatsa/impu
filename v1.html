@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Impu</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="editor">Hello</div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      function firebaseInitialize() {
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA3R2bXx4fPYecncpLi1pipnTDP_lkbqWU",
+            authDomain: "impu-5c833.firebaseapp.com",
+            databaseURL: "https://impu-5c833.firebaseio.com",
+            projectId: "impu-5c833",
+            storageBucket: "impu-5c833.appspot.com",
+            messagingSenderId: "334091196244"
+        };
+        firebase.initializeApp(config);
+
+        // Get a reference to the database service
+        var database = firebase.database();
+
+        // // Now example of usage: your page can say
+        // firebase.database().ref('/haha').set({hello: 'world'})
+        // // followed by
+        // firebase.database().ref('/haha').once('value').then(x => console.log("The value of x is ", x.val()))
+        // // prints The value of x is  Object {hello: "world"}
+
+        // Ok, so my data structure:
+        /*
+          {
+            docs: {
+              <secret_key>: {
+                  versions: [ ... ],
+                  snapshots: {
+                      version_id: "...",
+                  }
+              }
+            }
+          }
+        */
+
+        /*
+          I manually initialized it, after playing like this:
+
+            firebase.database().ref('/dcs').set({docId : "e"}).then(console.log('done'));   // works
+            firebase.database().ref('/docs').set({docId : {}}).then(console.log('done'));   // does nothing
+            firebase.database().ref('/docs/' + docId).set({versions: "h", snapshots: "w"}); // works
+            firebase.database().ref('/docs/' + docId).set({versions: [], snapshots: {}});   // does nothing
+
+            firebase.database().ref('/docs/' + docId + '/snapshots').push().set({hello: "world"}) // works
+        */
+      }
+
+      // Get the docId as the part after the # in the url
+      const docId = window.location.hash.substr(1);
+
+      function getLatest(callback) {
+          // Get the doc contents of the latest version from the database, and call callback() with it
+          firebase.database().ref('/docs/' + docId + '/snapshots/').orderByKey().limitToLast(1).once('value').then(x => {
+              let y = x.val();
+              console.log('Got', y);
+              for (let a in y) {
+                  console.log('In', y, ':', a, 'goes to', y[a]);
+                  console.log(y[a].contents);
+                  callback(y[a].contents);
+                  break; // Just in case we have more than 1, despite limitToLast(1)
+              }
+          });
+      }
+
+      // Save current contents as a snapshot
+      function addSnapshot(contents) {
+          let addedRef = firebase.database().ref('/docs/' + docId + '/snapshots').push();
+          addedRef.set({
+              contents: contents,
+              date: firebase.database.ServerValue.TIMESTAMP,
+          });
+          firebase.database().ref('/docs/' + docId + '/versions').once('value').then(function(x) {
+              let list = x.val() || [];
+              list.push(addedRef.key);
+              firebase.database().ref('/docs/' + docId + '/versions').set(list);
+          });
+      };
+
+
+      var editor = ace.edit("editor");
+      // editor.setTheme("ace/theme/monokai");
+      // editor.getSession().setMode("ace/mode/markdown");
+
+    </script>
+  </body>
+</html>

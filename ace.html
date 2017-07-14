@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ace test</title>
+<style type="text/css" media="screen">
+    #container {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    #editor {
+      flex: 1 30em;
+    }
+</style>
+  </head>
+  <body>
+    <div id="container">
+    <p>Some text before the editor.</p>
+    <div id="editor"></div>
+    <p>Some text after the editor.</p>
+    <p>Goodbye!</p>
+    </div>
+
+<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/textmate");
+  editor.getSession().setMode("ace/mode/markdown");
+  editor.setValue(`
+This is my document
+
+Some text
+
+# Heading 1
+
+Some text
+
+## Heading 1.1
+
+What goes next
+
+Some normal text with **bold** in it.
+
+## Heading 1.2
+
+And here we end.
+
+# Heading 2
+
+More text
+
+  `);
+</script>
+</body>
+</html>
