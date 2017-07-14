@@ -22,13 +22,14 @@
   </head>
   <body>
     <div id="container">
-      <p>Type text into the box below. When done click <input type="button" id="save" value="Save"></input> <- this.</p>
+      <p>Type text into the box below. When done click <input type="button" id="save" value="Save"></input>. Last saved at <span id="whenSaved"></span>.</p>
       <div id="editor">Please wait until this text is replaced...</div>
       <p>When done, click Save.</p>
     </div>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
     <!-- <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript" charset="utf-8"></script> -->
     <script>
       function firebaseInitialize() {
         // Initialize Firebase
@@ -89,6 +90,7 @@
               for (let a in y) {
                   console.log('In', y, ':', a, 'goes to', y[a]);
                   console.log(y[a].contents);
+                  document.getElementById('whenSaved').textContent = Date(y[a].date);
                   callback(y[a].contents);
                   break; // Just in case we have more than 1, despite limitToLast(1)
               }
@@ -101,6 +103,12 @@
           addedRef.set({
               contents: contents,
               date: firebase.database.ServerValue.TIMESTAMP,
+          }).then(() => {
+              // Update 'whenSaved' by doing another get(!)
+              addedRef.once('value').then(x => {
+                  when = x.val()['date'];
+                  whenSaved.textContent = Date(when);
+              });
           });
           firebase.database().ref('/docs/' + docId + '/versions').once('value').then(function(x) {
               let list = x.val() || [];
