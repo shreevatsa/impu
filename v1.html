@@ -120,6 +120,8 @@
       var editor = ace.edit("editor");
       editor.setTheme("ace/theme/textmate");
       editor.getSession().setMode("ace/mode/markdown");
+      editor.getSession().setUseWrapMode(true);
+      editor.setShowPrintMargin(false);
       editor.$blockScrolling = Infinity;
 
       // Get from firebase and put into the editor
