@@ -135,6 +135,7 @@
       // Get from firebase and put into the editor
       getLatest(contents => {
           editor.getDoc().setValue(contents);
+          editor.getDoc().setCursor(10000, 10000);
           // Set up "Save" button to save to Firebase
           document.getElementById('save').onclick = function() {
               let contents = editor.getDoc().getValue();
