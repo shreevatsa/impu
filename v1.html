@@ -84,10 +84,10 @@
       function getLatest(callback) {
           firebase.database().ref('/docs/' + docId + '/snapshots/').orderByKey().limitToLast(1).once('value').then(x => {
               let y = x.val();
-              console.log('Got', y);
+              // console.log('Got', y);
               for (let a in y) {
-                  console.log('In', y, ':', a, 'goes to', y[a]);
-                  console.log(y[a].contents);
+                  // console.log('In', y, ':', a, 'goes to', y[a]);
+                  // console.log(y[a].contents);
                   document.getElementById('whenSaved').textContent = Date(y[a].date);
                   callback(y[a].contents);
                   break; // Just in case we have more than 1, despite limitToLast(1)
@@ -138,9 +138,9 @@
           // Set up "Save" button to save to Firebase
           document.getElementById('save').onclick = function() {
               let contents = editor.getDoc().getValue();
-              console.log("Saving", contents, "to Firebase");
+              // console.log("Saving", contents, "to Firebase");
               addSnapshot(contents);
-              console.log("Done adding snapshot");
+              // console.log("Done adding snapshot");
           }
       });
     </script>
