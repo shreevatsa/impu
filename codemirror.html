@@ -10,6 +10,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/mode/markdown/markdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/mode/xml/xml.min.js"></script>
+
+    <!-- Turned off folding because of scope for confusion by novices (where did my text go??) -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/foldgutter.min.css"> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/brace-fold.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/xml-fold.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/indent-fold.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/foldcode.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/foldgutter.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/fold/markdown-fold.min.js"></script> -->
+
+    <!-- Turned off autocomplete because it doesn't seem to work great with Indic text. -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/hint/show-hint.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/hint/anyword-hint.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/addon/hint/show-hint.min.css"> -->
     <style type="text/css">
       .CodeMirror {border: 1px solid silver; border-width: 1px 2px; }
       .cm-header { font-family: arial; }
@@ -33,6 +47,18 @@
       .CodeMirror {
           flex: 1 30em;
       }
+
+      .CodeMirror pre {
+          padding-bottom: 1.4em; /* More space between lines, but not between wrapped lines. */
+      }
+
+      /* .CodeMirror-lines { */
+      /*     padding: 2em 0 2em; /\* Vertical padding around content *\/ */
+      /* } */
+      /* .CodeMirror */
+      /* { */
+      /*     line-height:50px; */ /* Increases the stuff even for wrapped lines */
+      /* } */
     </style>
   </head>
 
@@ -50,6 +76,14 @@
           {
               lineNumbers: true,
               lineWrapping: true,
+              showCursorWhenSelecting: true,
+              lineWiseCopyCut: false, // I don't understand this, but it sounds dangerous
+              singleCursorHeightPerLine: false,
+              autofocus: true,
+              allowDropFileTypes: [],
+              cursorScrollMargin: 1,
+              // foldGutter: true,
+              // gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
               mode: "markdown",
               value: `# A First Level Header
 
@@ -74,7 +108,17 @@ dog's back.
 >
 > ## This is an H2 in a blockquote
       `,
-      });
+          });
+
+      // // Turned off autocomplete because it doesn't seem to work very well with Indic text
+      // // From https://stackoverflow.com/questions/13744176/codemirror-autocomplete-after-any-keyup
+      // editor.on("keyup", function (cm, event) {
+      //     if (!cm.state.completionActive && /*Enables keyboard navigation in autocomplete list*/
+      //         event.keyCode != 13) {        /*Enter - do not open autocomplete list just after item has been selected in it*/
+      //         cm.showHint({completeSingle: false});
+      //     }
+      // });
+
     </script>
   </body>
 </html>
