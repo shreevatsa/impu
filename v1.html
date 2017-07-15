@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Impu</title>
+    <link rel="stylesheet" property="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/codemirror.min.css">
     <style type="text/css" media="screen">
       #container {
         display: flex;
@@ -15,21 +16,35 @@
         bottom: 0;
         right: 0;
       }
-      #editor {
+      .CodeMirror {
           flex: 1 30em;
+      }
+      .CodeMirror { border: 1px solid silver; border-width: 1px 2px; }
+      .cm-header { font-family: arial; }
+      .cm-header-1 { font-size: 150%; }
+      .cm-header-2 { font-size: 130%; }
+      .cm-header-3 { font-size: 120%; }
+      .cm-header-4 { font-size: 110%; }
+      .cm-header-5 { font-size: 100%; }
+      .cm-header-6 { font-size: 90%; }
+      .cm-strong { font-size: 103%; }
+
+      /* More space between lines, but not between wrapped lines. */
+      .CodeMirror pre {
+          padding-bottom: 1.4em;
       }
     </style>
   </head>
   <body>
     <div id="container">
       <p>Type text into the box below. When done click <input type="button" id="save" value="Save"></input>. Last saved at <span id="whenSaved"></span>.</p>
-      <div id="editor">Please wait until this text is replaced...</div>
+      <div id="forcm">Please wait until this text is replaced...</div>
       <p>When done, click Save.</p>
     </div>
     <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-    <!-- <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" type="text/javascript" charset="utf-8"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.27.4/mode/xml/xml.min.js"></script>
     <script>
       function firebaseInitialize() {
         // Initialize Firebase
@@ -46,17 +61,11 @@
         // Get a reference to the database service
         var database = firebase.database();
 
-        // // Now example of usage: your page can say
-        // firebase.database().ref('/haha').set({hello: 'world'})
-        // // followed by
-        // firebase.database().ref('/haha').once('value').then(x => console.log("The value of x is ", x.val()))
-        // // prints The value of x is  Object {hello: "world"}
-
-        // Ok, so my data structure:
+        // My data structure:
         /*
           {
             docs: {
-              <secret_key>: {
+              <secret_doc_id>: {
                   versions: [ ... ],
                   snapshots: {
                       version_id: "...",
@@ -65,25 +74,14 @@
             }
           }
         */
-
-        /*
-          I manually initialized it, after playing like this:
-
-            firebase.database().ref('/dcs').set({docId : "e"}).then(console.log('done'));   // works
-            firebase.database().ref('/docs').set({docId : {}}).then(console.log('done'));   // does nothing
-            firebase.database().ref('/docs/' + docId).set({versions: "h", snapshots: "w"}); // works
-            firebase.database().ref('/docs/' + docId).set({versions: [], snapshots: {}});   // does nothing
-
-            firebase.database().ref('/docs/' + docId + '/snapshots').push().set({hello: "world"}) // works
-        */
       }
       firebaseInitialize();
 
       // Get the docId as the part after the # in the url
       const docId = window.location.hash.substr(1);
 
+      // Get the doc contents of the latest version from the database, and call callback() with it
       function getLatest(callback) {
-          // Get the doc contents of the latest version from the database, and call callback() with it
           firebase.database().ref('/docs/' + docId + '/snapshots/').orderByKey().limitToLast(1).once('value').then(x => {
               let y = x.val();
               console.log('Got', y);
@@ -95,7 +93,7 @@
                   break; // Just in case we have more than 1, despite limitToLast(1)
               }
           });
-      }
+      };
 
       // Save current contents as a snapshot
       function addSnapshot(contents) {
@@ -117,19 +115,29 @@
           });
       };
 
-      var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/textmate");
-      editor.getSession().setMode("ace/mode/markdown");
-      editor.getSession().setUseWrapMode(true);
-      editor.setShowPrintMargin(false);
-      editor.$blockScrolling = Infinity;
+      var editor = CodeMirror(
+          function(elt) {
+              document.getElementById('container').replaceChild(elt, document.getElementById('forcm'));
+          },
+          {
+              lineNumbers: true,
+              lineWrapping: true,
+              showCursorWhenSelecting: true,
+              lineWiseCopyCut: false, // I don't understand this, but it sounds dangerous
+              singleCursorHeightPerLine: false,
+              autofocus: true,
+              allowDropFileTypes: [],
+              cursorScrollMargin: 1,
+              mode: "markdown",
+              value: `Please wait until this text is replaced too.`,
+          });
 
       // Get from firebase and put into the editor
       getLatest(contents => {
-          editor.setValue(contents);
+          editor.getDoc().setValue(contents);
           // Set up "Save" button to save to Firebase
           document.getElementById('save').onclick = function() {
-              let contents = editor.getValue();
+              let contents = editor.getDoc().getValue();
               console.log("Saving", contents, "to Firebase");
               addSnapshot(contents);
               console.log("Done adding snapshot");
