@@ -1,0 +1,79 @@
+** Outline
+
+See basic example at http://prosemirror.net/examples/basic/ => https://github.com/ProseMirror/website/blob/master/pages/examples/basic/example.js
+
+#+BEGIN_SRC javascript
+const {EditorState} = require("prosemirror-state")
+const {EditorView} = require("prosemirror-view")
+const {DOMParser} = require("prosemirror-model")
+const {schema} = require("prosemirror-schema-basic")
+const {exampleSetup} = require("prosemirror-example-setup")
+
+window.view = new EditorView(document.querySelector("#editor"), {
+  state: EditorState.create({
+    doc: DOMParser.fromSchema(schema).parse(document.querySelector("#content")),
+    plugins: exampleSetup({schema})
+  })
+})
+#+END_SRC
+
+** Schema
+
+The basic schema mentioned above (from ~prosemirror-schema-basic~) is here: https://raw.githubusercontent.com/ProseMirror/prosemirror-schema-basic/master/src/schema-basic.js
+
+See things like:
+
+#+BEGIN_SRC javascript
+  doc: {
+    content: "block+"
+  },
+
+  paragraph: {
+    content: "inline<_>*",
+    group: "block",
+    parseDOM: [{tag: "p"}],
+    toDOM() { return ["p", 0] }
+  },
+
+  text: {
+    group: "inline"
+  },
+#+END_SRC
+
+We need to make a smaller version of it.
+
+** Inputrules
+
+http://prosemirror.net/docs/ref/#inputrules -- we probably want a fair number of these.
+
+** Markdown-ish
+
+See http://prosemirror.net/examples/markdown/ and code at https://github.com/ProseMirror/website/blob/master/pages/examples/markdown/example.js
+
+Compared to the example above, it:
+- imports the same EditorView and EditorState
+- Uses schema from "prosemirror-markdown"
+- Does not use any special inputrules or whatever
+
+#+BEGIN_SRC javascript
+function toProseMirror(content) {
+  let view = window.view = new EditorView(place, {
+    state: EditorState.create({
+      doc: defaultMarkdownParser.parse(content),
+      plugins: exampleSetup({schema})
+    })
+  })
+  view.focus()
+  getContent = () => {
+    let content = defaultMarkdownSerializer.serialize(view.state.doc)
+    view.destroy()
+    return content
+  }
+}
+#+END_SRC
+
+** Collaboration
+
+See http://prosemirror.net/examples/collab/ with code at:
+- https://github.com/ProseMirror/website/blob/master/src/collab/schema.js -- defines ~schema~ as prosemirror-schema-basic + list, and ~marks~ as the same as prosemirror-schema-basic's spec.marks.
+-
