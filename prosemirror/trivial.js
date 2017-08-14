@@ -15,6 +15,6 @@ const trivialSchema = new Schema({
 
 window.view = new EditorView(document.body, {
     state: EditorState.create({
-        schema: trivialSchema
+        schema: trivialSchema,
     }),
 })
