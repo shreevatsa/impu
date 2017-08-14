@@ -1,4 +1,4 @@
-const {Schema, Node} = require("prosemirror-model")
+const {Schema, Node, Fragment} = require("prosemirror-model")
 const {EditorView} = require("prosemirror-view")
 const {EditorState} = require("prosemirror-state")
 const history = require("prosemirror-history")
@@ -207,7 +207,7 @@ window.trivialSchema = new Schema({
         doc: {content: "block+"},
         paragraph: {
             group: "block",
-            content: "text<strong>*",
+            content: "inline<strong>*",
             toDOM: () => ["p", 0],
         },
         heading: {
@@ -255,7 +255,7 @@ menu.insertMenu.content.push(new MenuItem({
 // defaultDoc = window.exportedJSON || {};
 // console.log('Default doc is', defaultDoc);
 
-window.view = new EditorView(document.body, {
+window.view = new EditorView(document.getElementById('editor'), {
     state: EditorState.create({
         schema: trivialSchema,
         doc: Node.fromJSON(trivialSchema, window.exportedSaadhane),
