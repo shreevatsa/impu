@@ -6,7 +6,7 @@ There are these parts:
 
 - Schema: What can the document's structure be? E.g. "a document is a bunch of headings each followed by paragraphs and blockquotes; a paragraph can contain text that can be bold and/or italic", etc. ProseMirror already comes with a few schema you can use as examples, including "the set of documents expressible in Markdown".
 
-- State: The actual state of the editor. (What the document contains, where the cursor is, what is selected, etc.) The content must match the schema.
+- State: The actual state of the editor. (What the document contains, where the cursor is, what is selected, etc.) The content must (will) match the schema.
 
 - View: What the user actually sees (and interacts with), in their browser.
 
@@ -14,14 +14,14 @@ There are these parts:
 
 # Example
 
-Consider a document with the following "trivial schema". (Actually a truly "trivial schema" would probably mean an empty doc, so what is called `trivialSchema` below is really the simplest *nontrivial* schema.)
+Consider a document with the following "trivial schema". (Actually, a truly "trivial schema" would probably mean an empty doc, so what is called `trivialSchema` below is really the [simplest nontrivial](http://sites.math.rutgers.edu/~zeilberg/Opinion65.html) schema.)
 
 `trivial.html`:
 
     <!doctype html>
-    <style>.ProseMirror { background: silver }</style>
+    <style>.ProseMirror { background: silver; min-height: 80vh; }</style>
     <body>
-      The editor is the box that appears below. Try pasting stuff into it.
+      The editor is the box that appears below. Try typing words or pasting multiple paragraphs of stuff into it.
       <script src="trivial_bundle.js"></script>
     </body>
 
@@ -51,3 +51,21 @@ Consider a document with the following "trivial schema". (Actually a truly "triv
 After
 
     ~/local/bin/browserify trivial.js --outfile trivial_bundle.js
+
+(mathematical pun unintended), it results in the following webpage:
+
+<p align="center"><iframe src="trivial.html" style="height: 60vh; min-width: 80vw;"></iframe></p>
+
+Try it out!
+
+From Javascript (or the browser console), you can get the document contents with `window.view.state.doc.content.toJSON()`
+
+# Next steps
+
+After a few minutes of playing with the above, you may notice a few problems:
+
+- There is no way to enter new paragraphs, apart from pasting them in. Solution: ?
+
+- Related: If you make a paragraph empty by deleting all the text in it, there is no way to delete the paragraph itself. Solution: ?
+
+- It would be nice to have a richer schema (headings, bold, ... ?) and a correspondingly richer view, more editor features like undo, etc.
