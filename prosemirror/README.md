@@ -82,4 +82,14 @@ Let's look at these, in a random order:
 
 - Let's add a menu for usability (which will gain more entries as we update our schema): see commit a9eeb748402ea087b0e774875637bba93f69573b.
 
--
+- Making schema richer by adding headings: see bd4819dc72276ee069b0dbed41d2dbe2318ae1e2
+
+- Adding footnotes to schema: see 42eacbefc49e05053e6c3a46b7a17a4b71d7855f and 6c7811f52593365f98571b07438760a7b2854e4d
+
+Next steps:
+
+- Allow saving the doc to some cloud storage (Firebase?) (Not going to bother with the colloborative editing feature, and will instead just require users to not edit simultaneously.)
+
+- (Additionally) show all the footnotes at the end, to make them easier to see. Also should be able to jump from footnote to main text.
+
+- Show a table of contents / outline, to jump to specific sections.
