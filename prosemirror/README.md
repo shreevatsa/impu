@@ -48,11 +48,13 @@ Consider a document with the following "trivial schema". (Actually, a truly "tri
         }),
     })
 
-After
+After these steps (from [here](http://prosemirror.net/docs/guides/basics/))
 
+    npm install prosemirror-model prosemirror-view prosemirror-state
+    npm install -g browserify
     ~/local/bin/browserify trivial.js --outfile trivial_bundle.js
 
-(mathematical pun unintended), it results in the following webpage:
+it results in the following webpage:
 
 <p align="center"><iframe src="trivial.html" style="height: 60vh; min-width: 80vw;"></iframe></p>
 
@@ -69,3 +71,9 @@ After a few minutes of playing with the above, you may notice a few problems:
 - Related: If you make a paragraph empty by deleting all the text in it, there is no way to delete the paragraph itself. Solution: ?
 
 - It would be nice to have a richer schema (headings, bold, ... ?) and a correspondingly richer view, more editor features like undo, etc.
+
+Let's look at these, in a random order:
+
+- Adding undo is documented in the ProseMirror docs, so it turns out to be quite easy to do: see commit 3c6f86ae6f214232ac7c75e720971b3c7ea59695.
+
+- Let's make it possible to hit Enter to start a new paragraph.
