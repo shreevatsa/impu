@@ -80,4 +80,6 @@ Let's look at these, in a random order:
 
 - Let's make it possible to hit Enter to start a new paragraph: see 7c58f8c2f3fabb6cd8fc9b76265a1a9527725eca which adds `keymap(baseKeymap)` to `plugins`, which is defined in [prosemirror-commands](https://github.com/ProseMirror/prosemirror-commands/blob/52b3a1baddf4bb3f956ceb43b4000d4bc44c049b/src/commands.js). This is a bunch of commonsensical actions for individual keystrokes that users expect anyway.
 
-- Let's add a menu for usability (which will gain more entries as we update our schema): see
+- Let's add a menu for usability (which will gain more entries as we update our schema): see commit a9eeb748402ea087b0e774875637bba93f69573b.
+
+-
