@@ -74,17 +74,17 @@ After a few minutes of playing with the above, you may notice a few problems:
 
 Let's look at these, in a random order:
 
-- Adding undo is documented in the ProseMirror docs, so it turns out to be quite easy to do: see commit 3c6f86ae6f214232ac7c75e720971b3c7ea59695 which basically adds
+- Adding undo is documented in the ProseMirror docs, so it turns out to be quite easy to do: see [commit 3c6f86](https://github.com/shreevatsa/impu/commit/3c6f86ae6f214232ac7c75e720971b3c7ea59695) which basically adds
 
         plugins: [history.history(), keymap({"Mod-z": history.undo})]
 
-- Let's make it possible to hit Enter to start a new paragraph: see 7c58f8c2f3fabb6cd8fc9b76265a1a9527725eca which adds `keymap(baseKeymap)` to `plugins`, which is defined in [prosemirror-commands](https://github.com/ProseMirror/prosemirror-commands/blob/52b3a1baddf4bb3f956ceb43b4000d4bc44c049b/src/commands.js). This is a bunch of commonsensical actions for individual keystrokes that users expect anyway.
+- Let's make it possible to hit Enter to start a new paragraph: see [7c58f8c2](https://github.com/shreevatsa/impu/commit/7c58f8c2f3fabb6cd8fc9b76265a1a9527725eca) which adds `keymap(baseKeymap)` to `plugins`, which is defined in [prosemirror-commands](https://github.com/ProseMirror/prosemirror-commands/blob/52b3a1baddf4bb3f956ceb43b4000d4bc44c049b/src/commands.js). This is a bunch of commonsensical actions for individual keystrokes that users expect anyway.
 
-- Let's add a menu for usability (which will gain more entries as we update our schema): see commit a9eeb748402ea087b0e774875637bba93f69573b.
+- Let's add a menu for usability (which will gain more entries as we update our schema): see commit [a9eeb748](https://github.com/shreevatsa/impu/commit/a9eeb748402ea087b0e774875637bba93f69573b).
 
-- Making schema richer by adding headings: see bd4819dc72276ee069b0dbed41d2dbe2318ae1e2
+- Making schema richer by adding headings: see [bd4819dc](https://github.com/shreevatsa/impu/commit/bd4819dc72276ee069b0dbed41d2dbe2318ae1e2)
 
-- Adding footnotes to schema: see 42eacbefc49e05053e6c3a46b7a17a4b71d7855f and 6c7811f52593365f98571b07438760a7b2854e4d
+- Adding footnotes to schema: see [42eacbef](https://github.com/shreevatsa/impu/commit/42eacbefc49e05053e6c3a46b7a17a4b71d7855f) and [6c7811f5](https://github.com/shreevatsa/impu/commit/6c7811f52593365f98571b07438760a7b2854e4d)
 
 Next steps:
 
