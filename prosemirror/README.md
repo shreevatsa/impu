@@ -56,7 +56,7 @@ After these steps (from [here](http://prosemirror.net/docs/guides/basics/))
 
 it results in the following webpage:
 
-<p align="center"><iframe src="trivial.html" style="height: 60vh; min-width: 80vw;"></iframe></p>
+<p align="center"><iframe src="trivial.html" style="height: 60vh; width: 90%"></iframe></p>
 
 Try it out!
 
